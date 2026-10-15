@@ -1,2 +1,5 @@
 build/*
 !build/.gitkeep
+scripts
+data/group_A
+data/group_B

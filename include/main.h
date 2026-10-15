@@ -4,5 +4,9 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+#include <vector>
+#include <unordered_map>
+#include <cstdint>
 #include "Fasta_reader.h"
+#include "Kmer_encoder.h"
 #endif

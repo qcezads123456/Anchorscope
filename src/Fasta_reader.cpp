@@ -2,17 +2,22 @@
 using namespace std;
 namespace fs = std::filesystem;
 
-DNA_info_t FastaReader(const fs::path entry){
+vector <DNA_info_t> FastaReader(const fs::path entry){
     ifstream file(entry);
     if (!file.is_open()) {
         cerr << "Cannot open file!" << endl;
         return {};
-    }
-    DNA_info_t info;
+    } 
+    vector <DNA_info_t> genome_isolate;
     string line;
-    getline(file, info.title);
-    while(getline(file,line)){
-        info.seq+=line;
+    while (getline(file, line)) {
+        if (!line.empty() && line[0] == '>') {
+            genome_isolate.emplace_back();
+            genome_isolate.back().title = line.substr(1);
+        }
+        else if (!line.empty()) {
+            genome_isolate.back().seq += line;
+        }
     }
-    return info;
+    return genome_isolate;
 }
