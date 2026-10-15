@@ -9,4 +9,5 @@
 #include <cstdint>
 #include "Fasta_reader.h"
 #include "Kmer_encoder.h"
+#include "decoder.h"
 #endif
