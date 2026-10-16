@@ -1,9 +1,9 @@
 #include "decoder.h"
 using namespace std;
 
-int index_decode(int isolate_amount,uint64_t key){
+uint64_t index_decode(int isolate_amount,uint64_t key){
     uint64_t mask=1ULL;
-    int count=0;
+    uint64_t count=0;
     for(int i=0;i<isolate_amount;i++){
         if(i>0) key>>=1;
         count+=(key&mask);
@@ -36,5 +36,6 @@ string kmer_decode(int kmer_size,uint64_t kmer){
         }
         return_kmer+=ch;
     }
+    reverse(&return_kmer[0],&return_kmer[kmer_size]);
     return return_kmer;   
 }

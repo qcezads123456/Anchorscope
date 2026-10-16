@@ -4,8 +4,9 @@
 #include <string>
 #include <iostream>
 #include <cstdint>
+#include <algorithm>
 
-int index_decode(int isolate_amount,uint64_t key);
+uint64_t index_decode(int isolate_amount,uint64_t key);
 std::string kmer_decode(int kmer_size,uint64_t kmer);
 
 #endif
