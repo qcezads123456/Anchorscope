@@ -99,6 +99,7 @@ unordered_map <uint64_t, uint64_t> mutant_KmerCounter   //[kmer_encode, position
     stringstream ss(genome_mutant.seq);
     char ch;
     uint64_t position=0;
+    int threshold=0;
     while(!ss.eof()){
         if(count!= kmer_size){    
             while(count!=kmer_size && ss>>ch){
@@ -119,7 +120,7 @@ unordered_map <uint64_t, uint64_t> mutant_KmerCounter   //[kmer_encode, position
             }
             if(count==kmer_size){
                 if(kmer_count.find(encode_DNA)!=kmer_count.end()){
-                    if(index_decode(isolate_amount,encode_DNA)<=0){
+                    if(index_decode(isolate_amount,kmer_count.at(encode_DNA))<=threshold){
                         low_frequency_kmer[encode_DNA]=position;
                     }
                 }
@@ -141,7 +142,7 @@ unordered_map <uint64_t, uint64_t> mutant_KmerCounter   //[kmer_encode, position
                 encode_DNA &=kmer_mask;
                 position++;
                 if(kmer_count.find(encode_DNA)!=kmer_count.end()){
-                    if(index_decode(isolate_amount,encode_DNA)<=0){
+                    if(index_decode(isolate_amount,kmer_count.at(encode_DNA))<=threshold){
                         low_frequency_kmer[encode_DNA]=position;
                     }
                 }
