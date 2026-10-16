@@ -13,7 +13,7 @@ typedef struct DNA_info_t{
     std::string seq;
 }DNA_info_t;
 
-std::vector <DNA_info_t> FastaReader(const std::filesystem::path entry);
+std::vector <DNA_info_t> Fasta_reader(const std::filesystem::path entry);
 
 #endif
 

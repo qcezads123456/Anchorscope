@@ -9,7 +9,7 @@
 #include <sstream>
 #include <cstdint>
 
-std::unordered_map <uint64_t, uint64_t> KmerCounter(const std::vector <DNA_info_t> &genome_isolate,const int kmer_size);
-std::unordered_map <uint64_t, uint64_t> mutant_KmerCounter  
+std::unordered_map <uint64_t, uint64_t> build_kmers_index(const std::vector <DNA_info_t> &genome_isolate,const int kmer_size);
+std::unordered_map <uint64_t, std::vector <uint64_t>> find_rare_kmers  
 (const DNA_info_t &genome_mutant, int kmer_size,const std::unordered_map<uint64_t,uint64_t> &kmer_count,int isolate_amount);
 #endif

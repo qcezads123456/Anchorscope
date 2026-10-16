@@ -1,7 +1,7 @@
 #include "decoder.h"
 using namespace std;
 
-uint64_t index_decode(int isolate_amount,uint64_t key){
+uint64_t count_isolates(int isolate_amount,uint64_t key){
     uint64_t mask=1ULL;
     uint64_t count=0;
     for(int i=0;i<isolate_amount;i++){

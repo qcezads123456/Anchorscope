@@ -2,7 +2,7 @@
 using namespace std;
 namespace fs = std::filesystem;
 
-vector <DNA_info_t> FastaReader(const fs::path entry){
+vector <DNA_info_t> Fasta_reader(const fs::path entry){
     ifstream file(entry);
     if (!file.is_open()) {
         cerr << "Cannot open file!" << endl;

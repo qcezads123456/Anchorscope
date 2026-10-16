@@ -38,9 +38,9 @@ static int parser(char nucleotide){
     
 }*/
 
-unordered_map <uint64_t, uint64_t> KmerCounter   
+unordered_map <uint64_t, uint64_t> build_kmers_index   
 (const vector <DNA_info_t> &genome_isolate,const int kmer_size){
-    unordered_map <uint64_t, uint64_t> kmer_count;
+    unordered_map <uint64_t, uint64_t> kmer_index;
     uint64_t kmer_mask=1ULL;
     kmer_mask=(kmer_mask<<(kmer_size*2))-1;
     for(size_t i=0;i<genome_isolate.size();i++){
@@ -48,7 +48,7 @@ unordered_map <uint64_t, uint64_t> KmerCounter
         char ch;
         int count=0;
         uint64_t encode_DNA=0;
-        uint64_t isolate_index=1ULL<<i;
+        uint64_t isolate_mask=1ULL<<i;
         while(!ss.eof()){
             if(count!= kmer_size){
                 
@@ -67,8 +67,7 @@ unordered_map <uint64_t, uint64_t> KmerCounter
                     }
                 }
                 if(count==kmer_size){
-                    uint64_t isolate_index=1ULL<<i;
-                    kmer_count[encode_DNA] |= isolate_index;
+                    kmer_index[encode_DNA] |= isolate_mask;
                 }
             }
             else{
@@ -81,17 +80,17 @@ unordered_map <uint64_t, uint64_t> KmerCounter
                     encode_DNA <<= 2;
                     encode_DNA |= parser(ch);
                     encode_DNA &=kmer_mask;
-                    kmer_count[encode_DNA] |= isolate_index;
+                    kmer_index[encode_DNA] |= isolate_mask;
                 }
             }
         }
     }
-    return kmer_count;
+    return kmer_index;
 }
 
-unordered_map <uint64_t, uint64_t> mutant_KmerCounter   //[kmer_encode, position(actual value)]
-(const DNA_info_t &genome_mutant, int kmer_size,const unordered_map<uint64_t,uint64_t> &kmer_count,int isolate_amount){  
-    unordered_map <uint64_t, uint64_t> low_frequency_kmer;
+unordered_map <uint64_t, vector <uint64_t>> find_rare_kmers   //[kmer_encode, position(actual value)]
+(const DNA_info_t &genome_mutant, int kmer_size,const unordered_map<uint64_t,uint64_t> &kmer_index,int isolate_amount){  
+    unordered_map <uint64_t, vector<uint64_t>> low_frequency_kmer;
     uint64_t kmer_mask=1ULL;
     kmer_mask=(kmer_mask<<(kmer_size*2))-1;
     int count=0;
@@ -119,13 +118,13 @@ unordered_map <uint64_t, uint64_t> mutant_KmerCounter   //[kmer_encode, position
                 }
             }
             if(count==kmer_size){
-                if(kmer_count.find(encode_DNA)!=kmer_count.end()){
-                    if(index_decode(isolate_amount,kmer_count.at(encode_DNA))<=threshold){
-                        low_frequency_kmer[encode_DNA]=position;
+                if(kmer_index.find(encode_DNA)!=kmer_index.end()){
+                    if(count_isolates(isolate_amount,kmer_index.at(encode_DNA))<=threshold){
+                        low_frequency_kmer[encode_DNA].push_back(position);
                     }
                 }
                 else{
-                    low_frequency_kmer[encode_DNA]=position;
+                    low_frequency_kmer[encode_DNA].push_back(position);
                 }
             }
         }
@@ -141,13 +140,13 @@ unordered_map <uint64_t, uint64_t> mutant_KmerCounter   //[kmer_encode, position
                 encode_DNA |= parser(ch);
                 encode_DNA &=kmer_mask;
                 position++;
-                if(kmer_count.find(encode_DNA)!=kmer_count.end()){
-                    if(index_decode(isolate_amount,kmer_count.at(encode_DNA))<=threshold){
-                        low_frequency_kmer[encode_DNA]=position;
+                if(kmer_index.find(encode_DNA)!=kmer_index.end()){
+                    if(count_isolates(isolate_amount,kmer_index.at(encode_DNA))<=threshold){
+                        low_frequency_kmer[encode_DNA].push_back(position);
                     }
                 }
                 else{
-                    low_frequency_kmer[encode_DNA]=position;
+                    low_frequency_kmer[encode_DNA].push_back(position);
                 }
             }
         }
