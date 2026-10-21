@@ -1,24 +1,35 @@
 #include "main.h"
+
 using namespace std;
 namespace fs=std::filesystem;
-int main(){
+int main(int argc,char* argv[]){
     vector <DNA_info_t> genome_isolate,genome_mutant;
-    fs::path entry="./data/demo/sequence.fasta";
-    genome_isolate=Fasta_reader(entry);
-    entry="./data/demo/sequence_mutant.fasta";
-    genome_mutant=Fasta_reader(entry);
-    int kmer_size=21;
+    cli_parameter parameter_set;
+    if(help_parser(argc,argv)){
+        cerr<<help_line;
+        return 0;
+    }
+    if (!cli_parser(argc, argv, parameter_set)) {
+        cerr<<"ERROR: Invalid arguments.\n\n";
+        cerr<<help_line;
+
+        return EXIT_FAILURE;
+    }
+    genome_isolate=Fasta_reader(parameter_set.ref_des);
+    if(genome_isolate.empty()) return EXIT_FAILURE;
+    genome_mutant=Fasta_reader(parameter_set.mutant_des);
+    if(genome_mutant.empty()) return EXIT_FAILURE;
     unordered_map <uint64_t, uint64_t> kmer_count;
     unordered_map <uint64_t, vector<uint64_t>> rare_kmer_position;
-    kmer_count=build_kmers_index(genome_isolate,kmer_size);
-    rare_kmer_position=find_rare_kmers(genome_mutant[0],kmer_size,kmer_count,genome_isolate.size());
+    kmer_count=build_kmers_index(genome_isolate,parameter_set.kmer_size);
+    rare_kmer_position=find_rare_kmers(genome_mutant[0],parameter_set.kmer_size,kmer_count,genome_isolate.size(),parameter_set);
 
-    /*const string& seq = genome_mutant[0].seq;
+    const string& seq = genome_mutant[0].seq;
     int size = seq.length();
     vector<int> frequent(size, 0);
     for (const auto& [kmer, position] : rare_kmer_position) {
         for(auto & pos : position){
-            int start = pos - kmer_size;
+            int start = pos - parameter_set.kmer_size;
             int end = pos;
             if (start < 0 || end > size)
             continue;
@@ -30,7 +41,7 @@ int main(){
     }
     int start = -1;
     for (int i = 0; i <= size; i++) {
-        bool selected = (i < size && frequent[i] >= 21);
+        bool selected = (i < size && frequent[i] >= parameter_set.kmer_size);
         if (selected && start == -1) {
             start = i;
         }
@@ -45,6 +56,5 @@ int main(){
         cout<<frequent[i]<<" ";
     }
     cout<<endl;
-    */
     return 0;
 }
