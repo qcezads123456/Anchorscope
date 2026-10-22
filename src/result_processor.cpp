@@ -22,7 +22,7 @@ void result_process
     ref_kmer_count=build_kmers_index(ref_seq,parameter_set.kmer_size);
     file<<"Analysis Report\n\n"
     <<"Reference sequences: "<<ref_seq.size()<<endl
-    <<"kmer size: "<<parameter_set.kmer_size
+    <<"k-mer size: "<<parameter_set.kmer_size
     <<"\ncoverage threshold: "<<parameter_set.coverage_threshold
     <<"\nmax reference frequency: "<<parameter_set.max_ref_freq*100<<"%\n\n"
     <<"------------------------------------------------------------------------\n\n";
@@ -44,13 +44,13 @@ void result_process
                 }
             }
         }
-        for(int start=1; start<size-1;){
+        for(int start=0; start<size-1;){
             int end=start;
             while(end+1 < size && frequent[end+1]==frequent[end]){
                 end++;
             }
             if(frequent[start]>=parameter_set.coverage_threshold && 
-                frequent[start-1]< frequent[start] && frequent[end+1]< frequent[end]){
+                (start==0|| frequent[start-1]< frequent[start])&&(end==size-1 || frequent[end+1]< frequent[end])){
                     file<<start+1<<" - "<< end+1<<"  ";
                     file<<seq.substr(start,end-start+1)<<endl;
                 }
