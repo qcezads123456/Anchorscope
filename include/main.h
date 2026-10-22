@@ -5,10 +5,9 @@
 #include <fstream>
 #include <filesystem>
 #include <vector>
-#include <unordered_map>
-#include <cstdint>
+#include <stdexcept>
 #include "Fasta_reader.h"
-#include "Kmer_encoder.h"
+#include "result_processor.h"
 #include "decoder.h"
 #include "cli.h"
 #define help_line \

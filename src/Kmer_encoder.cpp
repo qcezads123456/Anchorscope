@@ -11,32 +11,10 @@ static int parser(char nucleotide){
     }
 }
 
-/*unordered_map <uint64_t, uint64_t> KmerCounter(vector <DNA_info_t> genome_isolate, int kmer_size){
-    unordered_map <uint64_t, uint64_t> kmer_count;
-    uint64_t kmer_mask=1ULL;
-    kmer_mask=(kmer_mask<<(kmer_size*2))-1;
-    for(size_t i=0;i<genome_isolate.size();i++){
-        uint64_t encode_DNA=0;
-        for(int s=0; s<kmer_size; s++){
-            if(s>0){
-                encode_DNA<<=2;
-            }
-            encode_DNA|=parser(genome_isolate[i].seq[s]);
-        }
-        uint64_t isolate_index=1ULL<<i;
-        kmer_count[encode_DNA] |= isolate_index;
-        stringstream ss(genome_isolate[i].seq.substr(kmer_size));
-        char ch;
-        while(ss >> ch) {
-            encode_DNA <<= 2;
-            encode_DNA |= parser(ch);
-            encode_DNA &=kmer_mask;
-            kmer_count[encode_DNA] |= isolate_index;
-        }
-    }
-    return kmer_count;
-    
-}*/
+/********************************************************************
+                            1-based
+*********************************************************************/
+
 
 unordered_map <uint64_t, uint64_t> build_kmers_index   
 (const vector <DNA_info_t> &genome_isolate,const int kmer_size){

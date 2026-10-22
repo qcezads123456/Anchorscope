@@ -3,3 +3,4 @@ build/*
 scripts
 data/group_A
 data/group_B
+result/result.txt

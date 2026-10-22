@@ -13,7 +13,7 @@ vector <DNA_info_t> Fasta_reader(const fs::path entry){
     while (getline(file, line)) {
         if (!line.empty() && line[0] == '>') {
             genome_isolate.emplace_back();
-            genome_isolate.back().title = line.substr(1);
+            genome_isolate.back().header = line.substr(1);
         }
         else if (!line.empty()) {
             genome_isolate.back().seq += line;

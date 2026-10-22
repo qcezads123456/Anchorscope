@@ -1,6 +1,5 @@
 #ifndef CLI_H
 #define CLI_H
-#include <cstdbool>
 #include <string>
 #include <iostream>
 #include <filesystem>

@@ -2,7 +2,6 @@
 #define DECODER_H
 
 #include <string>
-#include <iostream>
 #include <cstdint>
 #include <algorithm>
 
